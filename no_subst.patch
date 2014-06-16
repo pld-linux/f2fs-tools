@@ -1,0 +1,13 @@
+--- f2fs-tools-1.3.0/configure.ac.orig	2014-06-16 19:59:21.760240514 +0200
++++ f2fs-tools-1.3.0/configure.ac	2014-06-16 19:59:55.486721838 +0200
+@@ -73,10 +73,6 @@ AC_CHECK_FUNCS_ONCE([
+ ])
+ 
+ # Install directories
+-AC_PREFIX_DEFAULT([/usr])
+-AC_SUBST([sbindir], [/sbin])
+-AC_SUBST([sysconfdir], [/etc])
+-AC_SUBST([localstatedir], [/var])
+ AC_CONFIG_FILES([
+ 	Makefile
+ 	man/Makefile
