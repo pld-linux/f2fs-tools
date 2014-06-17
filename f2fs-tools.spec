@@ -32,13 +32,17 @@ Pakiet ten zawiera narzędzia do tworzenia systemów plików f2fs.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-%configure
+%configure \
+	--disable-static
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+# API not exported
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libf2fs.{so,la}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
