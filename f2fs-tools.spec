@@ -1,15 +1,16 @@
 Summary:	Utilities for managing the f2fs filesystem
-Summary(pl.UTF-8):	Narzędzia do systemu plików f2fs
+Summary(pl.UTF-8):	Narzędzia do zarządzania systemem plików f2fs
 Name:		f2fs-tools
 Version:	1.7.0
 Release:	1
-License:	GPL v2
+License:	GPL v2 (tools), GPL v2 or LGPL v2.1 (libraries)
 Group:		Applications/System
 Source0:	http://git.kernel.org/cgit/linux/kernel/git/jaegeuk/f2fs-tools.git/snapshot/%{name}-%{version}.tar.gz
 # Source0-md5:	9db22274264f0c88dbee012f257917b1
 URL:		http://f2fs-tools.sourceforge.net/
 BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake
+BuildRequires:	libselinux-devel
 BuildRequires:	libtool
 BuildRequires:	libuuid-devel
 BuildRequires:	pkgconfig
@@ -19,7 +20,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 NAND flash memory-based storage devices, such as SSD, and SD cards,
 have been widely being used for ranging from mobile to server systems.
 Since they are known to have different characteristics from the
-conventional rotational disks,a file system, an upper layer to the
+conventional rotational disks, a file system, an upper layer to the
 storage device, should adapt to the changes from the sketch.
 
 F2FS is a new file system carefully designed for the NAND flash
@@ -34,16 +35,36 @@ aka FTL, we add various parameters not only for configuring on-disk
 layout, but also for selecting allocation and cleaning algorithms.
 
 %description -l pl.UTF-8
-Pakiet ten zawiera narzędzia do tworzenia systemów plików f2fs.
+Urządzenia przechowujące ane oparte na pamięci flash NAND, takie jak
+dyski SSD i karty SD, mają szerokie zastosowanie od systemów
+przenośnych po serwerowe. Ponieważ mają inną charakterystykę od
+klasycznych dysków obrotowych, system plików, będący wyższą warstwą
+przechowywania danych, powinien być do niej dostosowany.
+
+F2FS to nowy system plików zaprojektowany z troską o urządzenia oparte
+na pamięci flash NAND. Wykorzystuje podejście oparte na strukturze
+logu, ale zaadaptowanej do nowego rodzaju pamięci.
+
+Ponieważ urządzenia oparte na pamięci NAND mają różną charakterystykę
+w zależności od wewnętrznej geometrii lub schematu zarządzania
+pamięcią (FTL), dodane zostały różne parametry nie tylko do
+konfigurowania ułożenia systemu na dysku, ale także wyboru algorytmów
+przydzielania i czyszczenia.
 
 %package devel
-Summary:	Development files for %{name}
+Summary:	Header files for f2fs libraries
+Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek f2fs
+License:	GPL v2 or LGPL v2.1
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
-This package contains the libraries needed to develop applications
-that use f2fs-tools
+This package contains the header files needed to develop applications
+that use f2fs libraries.
+
+%description devel -l pl.UTF-8
+Ten pakiet zawiera pliki nagłówkowe potrzebne do tworzenia aplikacji
+wykorzystujących biblioteki f2fs.
 
 %prep
 %setup -q
@@ -100,9 +121,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libf2fs.so
+%attr(755,root,root) %{_libdir}/libf2fs_format.so
 %{_libdir}/libf2fs.la
-%{_libdir}/libf2fs.so
 %{_libdir}/libf2fs_format.la
-%{_libdir}/libf2fs_format.so
 %{_includedir}/f2fs_format_utils.h
 %{_includedir}/f2fs_fs.h
