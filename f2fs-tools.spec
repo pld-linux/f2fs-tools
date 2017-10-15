@@ -1,15 +1,17 @@
 Summary:	Utilities for managing the f2fs filesystem
 Summary(pl.UTF-8):	Narzędzia do zarządzania systemem plików f2fs
 Name:		f2fs-tools
-Version:	1.7.0
+Version:	1.9.0
 Release:	1
 License:	GPL v2 (tools), GPL v2 or LGPL v2.1 (libraries)
 Group:		Applications/System
 Source0:	http://git.kernel.org/cgit/linux/kernel/git/jaegeuk/f2fs-tools.git/snapshot/%{name}-%{version}.tar.gz
-# Source0-md5:	9db22274264f0c88dbee012f257917b1
+# Source0-md5:	f35cfdee1dc616f226fff96a56974d8c
+Patch0:		blkid.patch
 URL:		http://f2fs-tools.sourceforge.net/
 BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake
+BuildRequires:	libblkid-devel
 BuildRequires:	libselinux-devel
 BuildRequires:	libtool
 BuildRequires:	libuuid-devel
@@ -68,6 +70,7 @@ wykorzystujących biblioteki f2fs.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -100,11 +103,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
 %attr(755,root,root) %{_libdir}/libf2fs.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libf2fs.so.1
+%attr(755,root,root) %ghost %{_libdir}/libf2fs.so.3
 %attr(755,root,root) %{_libdir}/libf2fs_format.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libf2fs_format.so.0
+%attr(755,root,root) %ghost %{_libdir}/libf2fs_format.so.2
 %attr(755,root,root) %{_sbindir}/defrag.f2fs
 %attr(755,root,root) %{_sbindir}/dump.f2fs
+%attr(755,root,root) %{_sbindir}/f2fscrypt
 %attr(755,root,root) %{_sbindir}/f2fstat
 %attr(755,root,root) %{_sbindir}/fibmap.f2fs
 %attr(755,root,root) %{_sbindir}/fsck.f2fs
@@ -114,6 +118,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/sload.f2fs
 %{_mandir}/man8/defrag.f2fs.8*
 %{_mandir}/man8/dump.f2fs.8*
+%{_mandir}/man8/f2fscrypt.8*
 %{_mandir}/man8/fsck.f2fs.8*
 %{_mandir}/man8/mkfs.f2fs.8*
 %{_mandir}/man8/resize.f2fs.8*
