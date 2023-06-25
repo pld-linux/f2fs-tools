@@ -1,13 +1,12 @@
 Summary:	Utilities for managing the f2fs filesystem
 Summary(pl.UTF-8):	Narzędzia do zarządzania systemem plików f2fs
 Name:		f2fs-tools
-Version:	1.9.0
+Version:	1.16.0
 Release:	1
 License:	GPL v2 (tools), GPL v2 or LGPL v2.1 (libraries)
 Group:		Applications/System
 Source0:	http://git.kernel.org/cgit/linux/kernel/git/jaegeuk/f2fs-tools.git/snapshot/%{name}-%{version}.tar.gz
-# Source0-md5:	f35cfdee1dc616f226fff96a56974d8c
-Patch0:		blkid.patch
+# Source0-md5:	5b05b9331a18564c635b3bf8305c3910
 URL:		http://f2fs-tools.sourceforge.net/
 BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake
@@ -15,6 +14,9 @@ BuildRequires:	libblkid-devel
 BuildRequires:	libselinux-devel
 BuildRequires:	libtool
 BuildRequires:	libuuid-devel
+BuildRequires:	linux-libc-headers >= 7:5.9.0
+BuildRequires:	lz4-devel
+BuildRequires:	lzo-devel >= 2.01
 BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -70,7 +72,6 @@ wykorzystujących biblioteki f2fs.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -79,6 +80,7 @@ wykorzystujących biblioteki f2fs.
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-silent-rules \
 	--disable-static
 %{__make}
 
@@ -103,13 +105,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
 %attr(755,root,root) %{_libdir}/libf2fs.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libf2fs.so.3
+%attr(755,root,root) %ghost %{_libdir}/libf2fs.so.10
 %attr(755,root,root) %{_libdir}/libf2fs_format.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libf2fs_format.so.2
+%attr(755,root,root) %ghost %{_libdir}/libf2fs_format.so.9
 %attr(755,root,root) %{_sbindir}/defrag.f2fs
 %attr(755,root,root) %{_sbindir}/dump.f2fs
+%attr(755,root,root) %{_sbindir}/f2fs_io
 %attr(755,root,root) %{_sbindir}/f2fscrypt
-%attr(755,root,root) %{_sbindir}/f2fstat
+%attr(755,root,root) %{_sbindir}/f2fslabel
 %attr(755,root,root) %{_sbindir}/fibmap.f2fs
 %attr(755,root,root) %{_sbindir}/fsck.f2fs
 %attr(755,root,root) %{_sbindir}/mkfs.f2fs
@@ -118,7 +121,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/sload.f2fs
 %{_mandir}/man8/defrag.f2fs.8*
 %{_mandir}/man8/dump.f2fs.8*
+%{_mandir}/man8/f2fs_io.8*
 %{_mandir}/man8/f2fscrypt.8*
+%{_mandir}/man8/f2fslabel.8*
 %{_mandir}/man8/fsck.f2fs.8*
 %{_mandir}/man8/mkfs.f2fs.8*
 %{_mandir}/man8/resize.f2fs.8*
